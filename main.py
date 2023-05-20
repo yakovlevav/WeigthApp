@@ -16,12 +16,23 @@ d_end = st.date_input(
     "End date",
     datetime.datetime.now())
 
-df_weights = pd.read_csv('weight.csv', 
+df_weights_clean = pd.read_csv('weight.csv', 
                    sep=';', 
                    parse_dates = [0], 
                    names=['Date', 'Weight'], 
                    index_col='Date',
                    decimal=',').dropna()
+
+csv = df_weights_clean.to_csv()
+st.download_button(
+   "Press to Download",
+   csv,
+   "weight_data.csv",
+   "text/csv",
+   key='download-csv'
+)
+
+df_weights = df_weights_clean
 
 df_weights['week'] = df_weights.index.strftime('%yw%V')
 df_weights['Weight'] = df_weights['Weight'].astype('float')
@@ -43,3 +54,5 @@ st.header("Weight by week plot")
 week_weight = px.box(df_weights, x="week", y="Weight")
 
 st.plotly_chart(week_weight)
+
+
