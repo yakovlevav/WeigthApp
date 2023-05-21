@@ -83,3 +83,8 @@ df_run[ 'roll' ] = df_run.Effective.rolling(7).mean()
 
 run_effective_plot = px.box(df_run, x="week", y="Effective")
 st.plotly_chart(run_effective_plot)
+
+running_log = px.scatter(df_run, y="Effective")
+running_log_avg = px.line(df_run, y="roll")
+running_log_plot = go.Figure(data=running_log.data + running_log_avg.data)
+st.plotly_chart(running_log_plot)
